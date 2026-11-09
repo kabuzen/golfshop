@@ -7,139 +7,101 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#102b4e;--green:#0e8a58;--mint:#e8f7ef}*{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui;background:#f7faf9;color:#14243a}
+:root{--green:#0e8a58}*{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui;background:#f7faf9;color:#14243a}
 .hero{background:linear-gradient(110deg,rgba(5,38,65,.88),rgba(7,112,77,.45)),url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1800&q=85') center/cover}
 .gradient{background:linear-gradient(110deg,#e7f4ff,#e5fff1 55%,#fff1f5)}
 .product{background:white;border:1px solid #e4ece8;border-radius:18px;overflow:hidden;box-shadow:0 5px 20px #0b39200c}
 .product img{width:100%;height:180px;object-fit:cover;background:#eef4f0}
 .btn{background:#087b4d;color:white;border-radius:999px;padding:10px 17px;font-weight:700}.btn:hover{background:#05613c}
-.pill{border:1px solid #d7e6dd;border-radius:999px;padding:8px 14px;background:white}
-input,select,textarea{border:1px solid #d5e0da;border-radius:10px;padding:10px;width:100%;background:white}
-.modal{display:none}.modal.open{display:flex}
+.pill{border:1px solid #d7e6dd;border-radius:999px;padding:8px 14px;background:white}.modal{display:none}.modal.open{display:flex}
 @media(max-width:640px){.hero{min-height:380px}.product img{height:145px}}
-</style></head>
+</style>
+</head>
 <body>
-<header class="bg-white/95 sticky top-0 z-40 border-b border-emerald-100">
- <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-  <a href="#" class="font-black text-xl text-emerald-800">⛳ GolfShop<span class="text-slate-700">.id</span></a>
-  <nav class="hidden md:flex gap-6 text-sm font-semibold"><a href="#produk">Produk</a><a href="#artikel">Artikel Golf</a><a href="#cara">Cara Belanja</a><a href="#tentang">Tentang</a></nav>
-  <div class="flex gap-2"><button class="pill text-sm" onclick="showCart()">🛒 <span id="cartCount">0</span></button><button class="btn text-sm" onclick="document.getElementById('adminModal').classList.add('open')">Kelola</button></div>
- </div>
-</header>
-<section class="hero text-white">
- <div class="max-w-7xl mx-auto px-5 py-20 md:py-28">
-  <div class="max-w-2xl"><span class="inline-block bg-white/20 rounded-full px-4 py-2 text-sm mb-5">Untuk golfer pemula hingga profesional</span>
-  <h1 class="text-4xl md:text-6xl font-black leading-tight">Perlengkapan golf,<br>lebih mudah dijangkau.</h1>
-  <p class="mt-5 text-lg text-white/90">Pilihan produk untuk pria, wanita, dan junior. Bandingkan pilihan, temukan penawaran, dan belanja dengan nyaman.</p>
-  <a href="#produk" class="inline-block mt-7 bg-white text-emerald-900 font-bold rounded-full px-6 py-3">Jelajahi Produk</a></div>
- </div>
-</section>
-<section class="max-w-7xl mx-auto px-4 -mt-7 relative z-10">
- <div class="gradient rounded-2xl p-4 md:p-6 grid grid-cols-2 md:grid-cols-4 gap-3 text-center shadow">
-  <div><b class="text-emerald-800">🏌️ Pria</b><p class="text-xs text-slate-600">Apparel & gear</p></div><div><b class="text-emerald-800">👚 Wanita</b><p class="text-xs text-slate-600">Apparel & gear</p></div><div><b class="text-emerald-800">🧒 Junior</b><p class="text-xs text-slate-600">Perlengkapan anak</p></div><div><b class="text-emerald-800">🎒 Aksesori</b><p class="text-xs text-slate-600">Pelengkap permainan</p></div>
- </div>
-</section>
+<header class="bg-white/95 sticky top-0 z-40 border-b border-emerald-100"><div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+<a href="#" class="font-black text-xl text-emerald-800">⛳ GolfShop<span class="text-slate-700">.id</span></a>
+<nav class="hidden md:flex gap-6 text-sm font-semibold"><a href="#produk">Produk</a><a href="#artikel">Artikel Golf</a><a href="#cara">Cara Belanja</a><a href="#tentang">Tentang</a></nav>
+<div class="flex gap-2 items-center"><button class="pill text-sm" onclick="showCart()">🛒 <span id="cartCount">0</span></button><a id="manageLink" class="btn text-sm hidden" href="/admin.html">Kelola</a></div>
+</div></header>
+<section class="hero text-white"><div class="max-w-7xl mx-auto px-5 py-20 md:py-28"><div class="max-w-2xl">
+<span class="inline-block bg-white/20 rounded-full px-4 py-2 text-sm mb-5">Untuk golfer pemula hingga profesional</span>
+<h1 class="text-4xl md:text-6xl font-black leading-tight">Perlengkapan golf,<br>lebih mudah dijangkau.</h1>
+<p class="mt-5 text-lg text-white/90">Pilihan produk untuk pria, wanita, dan junior. Bandingkan pilihan, temukan penawaran, dan belanja dengan nyaman.</p>
+<a href="#produk" class="inline-block mt-7 bg-white text-emerald-900 font-bold rounded-full px-6 py-3">Jelajahi Produk</a></div></div></section>
+<section class="max-w-7xl mx-auto px-4 -mt-7 relative z-10"><div class="gradient rounded-2xl p-4 md:p-6 grid grid-cols-2 md:grid-cols-4 gap-3 text-center shadow">
+<div><b class="text-emerald-800">🏌️ Pria</b><p class="text-xs text-slate-600">Apparel & gear</p></div><div><b class="text-emerald-800">👚 Wanita</b><p class="text-xs text-slate-600">Apparel & gear</p></div><div><b class="text-emerald-800">🧒 Junior</b><p class="text-xs text-slate-600">Perlengkapan anak</p></div><div><b class="text-emerald-800">🎒 Aksesori</b><p class="text-xs text-slate-600">Pelengkap permainan</p></div>
+</div></section>
 <main id="produk" class="max-w-7xl mx-auto px-4 py-12">
- <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6"><div><p class="text-emerald-700 font-bold text-sm">KATALOG PILIHAN</p><h2 class="text-3xl font-black">Temukan perlengkapan Anda</h2><p class="text-slate-500 mt-1">Harga dan ketersediaan dapat berubah di toko asal.</p></div>
- <div class="flex flex-col sm:flex-row gap-2"><input id="search" placeholder="Cari produk..." oninput="renderProducts()"><select id="category" onchange="renderProducts()"><option value="">Semua kategori</option><option>Klub</option><option>Bola</option><option>Apparel Pria</option><option>Apparel Wanita</option><option>Junior</option><option>Aksesori</option><option>Sepatu</option></select></div></div>
- <div id="products" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
-</main>
-<section id="cara" class="gradient py-12"><div class="max-w-7xl mx-auto px-4"><h2 class="text-2xl font-black mb-6">Belanja dengan cara yang sederhana</h2><div class="grid md:grid-cols-3 gap-5"><div class="bg-white rounded-2xl p-5"><b>1. Pilih produk</b><p class="text-sm text-slate-600 mt-2">Telusuri katalog dan baca informasi produk.</p></div><div class="bg-white rounded-2xl p-5"><b>2. Periksa toko asal</b><p class="text-sm text-slate-600 mt-2">Untuk produk marketplace, transaksi dilanjutkan di platform asal.</p></div><div class="bg-white rounded-2xl p-5"><b>3. Checkout langsung</b><p class="text-sm text-slate-600 mt-2">Pembayaran produk marketplace mengikuti metode resmi toko asal.</p></div></div></div></section>
-
-<section id="artikel" class="py-12 bg-white">
- <div class="max-w-7xl mx-auto px-4">
-  <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-6">
-   <div><p class="text-emerald-700 font-bold text-sm">GOLF INSIGHT</p><h2 class="text-3xl font-black">Cerita, pengetahuan & inspirasi golf</h2>
-   <p class="text-slate-500 mt-1">Artikel untuk golfer pemula hingga profesional.</p></div>
-   <a href="#artikel-list" class="pill text-sm text-center">Jelajahi artikel ↓</a>
-  </div>
-  <div class="flex gap-2 overflow-x-auto pb-3" id="articleFilters">
-   <button class="pill whitespace-nowrap" onclick="setArticleCategory('')">Semua</button>
-   <button class="pill whitespace-nowrap" onclick="setArticleCategory('Lapangan Golf')">Lapangan</button>
-   <button class="pill whitespace-nowrap" onclick="setArticleCategory('Teknik Bermain')">Teknik bermain</button>
-   <button class="pill whitespace-nowrap" onclick="setArticleCategory('Aplikasi & Teknologi')">Aplikasi</button>
-   <button class="pill whitespace-nowrap" onclick="setArticleCategory('Merek & Produk')">Merek & produk</button>
-   <button class="pill whitespace-nowrap" onclick="setArticleCategory('Pertandingan')">Pertandingan</button>
-  </div>
-  <div id="article-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4"></div>
- </div>
-</section>
-<div id="articleModal" class="modal fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-3 overflow-y-auto">
- <article class="bg-white rounded-2xl p-5 md:p-7 w-full max-w-3xl my-8">
-  <div class="flex justify-between items-center gap-3"><span id="articleCategory" class="text-xs font-bold text-emerald-700"></span><button onclick="closeModal('articleModal')">✕</button></div>
-  <h2 id="articleTitle" class="text-2xl md:text-3xl font-black mt-3"></h2><p id="articleMeta" class="text-xs text-slate-500 mt-2"></p>
-  <img id="articleImage" class="w-full h-56 md:h-72 object-cover rounded-xl my-5" alt="">
-  <div id="articleBody" class="prose max-w-none text-slate-700 leading-7 whitespace-pre-line"></div>
- </article>
-</div>
-
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6"><div><p class="text-emerald-700 font-bold text-sm">KATALOG PILIHAN</p><h2 class="text-3xl font-black">Temukan perlengkapan Anda</h2><p class="text-slate-500 mt-1">Harga dan ketersediaan dapat berubah di toko asal.</p></div>
+<div class="flex flex-col sm:flex-row gap-2"><input id="search" class="border rounded-xl px-3 py-2" placeholder="Cari produk..." oninput="renderProducts()"><select id="category" class="border rounded-xl px-3 py-2" onchange="renderProducts()"><option value="">Semua kategori</option><option>Klub</option><option>Bola</option><option>Apparel Pria</option><option>Apparel Wanita</option><option>Junior</option><option>Aksesori</option><option>Sepatu</option></select></div></div>
+<p id="productStatus" class="text-sm text-slate-500 mb-4">Memuat katalog produk…</p><div id="products" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div></main>
+<section id="cara" class="gradient py-12"><div class="max-w-7xl mx-auto px-4"><h2 class="text-2xl font-black mb-6">Belanja dengan cara yang sederhana</h2><div class="grid md:grid-cols-3 gap-5">
+<div class="bg-white rounded-2xl p-5"><b>1. Pilih produk</b><p class="text-sm text-slate-600 mt-2">Telusuri katalog dan baca informasi produk.</p></div>
+<div class="bg-white rounded-2xl p-5"><b>2. Periksa toko asal</b><p class="text-sm text-slate-600 mt-2">Untuk produk marketplace, transaksi dilanjutkan di platform asal.</p></div>
+<div class="bg-white rounded-2xl p-5"><b>3. Checkout langsung</b><p class="text-sm text-slate-600 mt-2">Pembayaran produk marketplace mengikuti metode resmi toko asal.</p></div>
+</div></div></section>
+<section id="artikel" class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4">
+<div class="mb-6"><p class="text-emerald-700 font-bold text-sm">GOLF INSIGHT</p><h2 class="text-3xl font-black">Cerita, pengetahuan & inspirasi golf</h2><p class="text-slate-500 mt-1">Artikel untuk golfer pemula hingga profesional.</p></div>
+<div class="flex gap-2 overflow-x-auto pb-3"><button class="pill whitespace-nowrap" onclick="setArticleCategory('')">Semua</button><button class="pill whitespace-nowrap" onclick="setArticleCategory('Lapangan Golf')">Lapangan</button><button class="pill whitespace-nowrap" onclick="setArticleCategory('Teknik Bermain')">Teknik bermain</button><button class="pill whitespace-nowrap" onclick="setArticleCategory('Aplikasi & Teknologi')">Aplikasi</button><button class="pill whitespace-nowrap" onclick="setArticleCategory('Merek & Produk')">Merek & produk</button><button class="pill whitespace-nowrap" onclick="setArticleCategory('Pertandingan')">Pertandingan</button></div>
+<p id="articleStatus" class="text-sm text-slate-500 mt-2">Memuat artikel…</p><div id="article-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4"></div></div></section>
+<div id="articleModal" class="modal fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-3 overflow-y-auto"><article class="bg-white rounded-2xl p-5 md:p-7 w-full max-w-3xl my-8">
+<div class="flex justify-between"><span id="articleCategory" class="text-xs font-bold text-emerald-700"></span><button onclick="closeModal('articleModal')">✕</button></div>
+<h2 id="articleTitle" class="text-2xl md:text-3xl font-black mt-3"></h2><p id="articleMeta" class="text-xs text-slate-500 mt-2"></p><img id="articleImage" class="w-full h-56 md:h-72 object-cover rounded-xl my-5" alt=""><div id="articleBody" class="text-slate-700 leading-7 whitespace-pre-line"></div>
+</article></div>
 <section id="tentang" class="max-w-7xl mx-auto px-4 py-12"><h2 class="text-2xl font-black">Golf untuk semua</h2><p class="mt-3 text-slate-600 max-w-3xl">GolfShop.id dirancang sebagai etalase perlengkapan golf untuk berbagai usia dan tingkat kemampuan. Kami ingin membantu komunitas menemukan pilihan yang sesuai anggaran, tanpa mengklaim harga termurah atau ketersediaan yang belum diverifikasi.</p></section>
 <footer class="bg-slate-950 text-slate-300 py-8"><div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between gap-3"><b class="text-white">GolfShop.id</b><p class="text-sm">© <span id="year"></span> GolfShop.id · Kebijakan privasi · Hubungi pengelola</p></div></footer>
-
 <div id="cartModal" class="modal fixed inset-0 bg-slate-950/50 z-50 items-center justify-center p-4"><div class="bg-white rounded-2xl p-5 w-full max-w-lg"><div class="flex justify-between"><h3 class="font-black text-xl">Daftar pilihan</h3><button onclick="closeModal('cartModal')">✕</button></div><div id="cartItems" class="my-4"></div><p class="text-xs text-slate-500">Keranjang ini hanya menyimpan pilihan pada perangkat. Untuk produk marketplace, lanjutkan transaksi di toko asal.</p><button class="btn mt-4" onclick="closeModal('cartModal')">Lanjut menjelajah</button></div></div>
 
-<div id="adminModal" class="modal fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-3 overflow-y-auto"><div class="bg-white rounded-2xl p-5 w-full max-w-xl my-8"><div class="flex justify-between"><h3 class="font-black text-xl">Kelola katalog</h3><button onclick="closeModal('adminModal')">✕</button></div>
-<p class="text-sm text-slate-500 my-2">Mode demo menyimpan data di browser ini. Untuk toko produksi, aktifkan Supabase Auth + database dan batasi akses admin di server.</p>
-<div class="border rounded-xl p-3 mt-4">
- <h4 class="font-bold">Tulis artikel golf</h4>
- <p class="text-xs text-slate-500 my-1">Mode demo menyimpan artikel di browser ini. Untuk publikasi multi-perangkat, gunakan CMS/database.</p>
- <form id="articleForm" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-  <input name="title" placeholder="Judul artikel" required class="sm:col-span-2">
-  <select name="category"><option>Lapangan Golf</option><option>Teknik Bermain</option><option>Aplikasi & Teknologi</option><option>Merek & Produk</option><option>Pertandingan</option></select>
-  <input name="author" placeholder="Nama penulis" value="Redaksi GolfShop.id">
-  <input name="image" placeholder="URL gambar (https://...)" class="sm:col-span-2">
-  <textarea name="excerpt" placeholder="Ringkasan artikel" required class="sm:col-span-2"></textarea>
-  <textarea name="body" placeholder="Isi artikel lengkap" rows="6" required class="sm:col-span-2"></textarea>
-  <button class="btn sm:col-span-2">Terbitkan artikel demo</button>
- </form>
- <div id="articleAdminList" class="text-sm mt-3 space-y-2"></div>
-</div>
-<form id="productForm" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"><input name="name" placeholder="Nama produk" required><input name="price" type="number" min="0" placeholder="Harga (Rp)" required><select name="category"><option>Klub</option><option>Bola</option><option>Apparel Pria</option><option>Apparel Wanita</option><option>Junior</option><option>Aksesori</option><option>Sepatu</option></select><input name="image" placeholder="URL gambar (https://...)"><input name="source" placeholder="URL produk Shopee/Tokopedia/website"><select name="type"><option value="marketplace">Link marketplace (affiliate/dropship)</option><option value="direct">Penjualan langsung</option></select><textarea name="description" placeholder="Deskripsi singkat" class="sm:col-span-2"></textarea><button class="btn sm:col-span-2">Simpan produk</button></form>
-<div class="border-t mt-5 pt-4"><h4 class="font-bold mb-2">Produk tersimpan di perangkat ini</h4><div id="adminList" class="text-sm space-y-2"></div></div></div></div>
 <script>
-const starter=[
-{id:"p1",name:"Bola golf latihan (isi 12)",price:125000,category:"Bola",image:"https://images.unsplash.com/photo-1587174486073-ae5e5cec4a8b?auto=format&fit=crop&w=700&q=80",source:"https://shopee.co.id/",type:"marketplace",description:"Contoh katalog. Periksa spesifikasi dan harga di toko asal."},
-{id:"p2",name:"Sarung tangan golf",price:89000,category:"Aksesori",image:"https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&w=700&q=80",source:"https://www.tokopedia.com/",type:"marketplace",description:"Contoh produk; detail mengikuti penjual."},
-{id:"p3",name:"Polo golf pria",price:179000,category:"Apparel Pria",image:"https://images.unsplash.com/photo-1627225924765-552d49cf47ad?auto=format&fit=crop&w=700&q=80",source:"https://shopee.co.id/",type:"marketplace",description:"Contoh katalog apparel pria."},
-{id:"p4",name:"Rok golf wanita",price:199000,category:"Apparel Wanita",image:"https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=700&q=80",source:"https://www.tokopedia.com/",type:"marketplace",description:"Contoh katalog apparel wanita."},
-{id:"p5",name:"Topi golf junior",price:75000,category:"Junior",image:"https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=700&q=80",source:"https://shopee.co.id/",type:"marketplace",description:"Contoh produk anak."},
-{id:"p6",name:"Tas golf",price:650000,category:"Aksesori",image:"https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&w=700&q=80",source:"https://www.tokopedia.com/",type:"marketplace",description:"Contoh katalog tas."},
-{id:"p7",name:"Sepatu golf",price:499000,category:"Sepatu",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80",source:"https://shopee.co.id/",type:"marketplace",description:"Contoh katalog sepatu."},
-{id:"p8",name:"Set klub junior",price:950000,category:"Klub",image:"https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=700&q=80",source:"https://www.tokopedia.com/",type:"marketplace",description:"Contoh katalog klub junior."}
-];
-let products=JSON.parse(localStorage.getItem("golfshop_products")||"null")||starter;
-let cart=[];
-const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
-function persist(){localStorage.setItem("golfshop_products",JSON.stringify(products))}
-function renderProducts(){let q=document.getElementById("search").value.toLowerCase(),c=document.getElementById("category").value;let list=products.filter(p=>(!c||p.category===c)&&(`${p.name} ${p.description||""}`).toLowerCase().includes(q));document.getElementById("products").innerHTML=list.map(p=>`<article class="product"><img loading="lazy" src="${safe(p.image||"")}" onerror="this.src='https://placehold.co/600x400/e8f7ef/14532d?text=GolfShop'"><div class="p-3 sm:p-4"><span class="text-xs text-emerald-700 font-bold">${safe(p.category)}</span><h3 class="font-bold mt-1 min-h-12">${safe(p.name)}</h3><p class="font-black text-emerald-800 mt-2">${rupiah(p.price)}</p><p class="text-xs text-slate-500 mt-1 min-h-9">${safe(p.description||"")}</p><div class="flex flex-col gap-2 mt-3"><button class="pill text-sm" onclick="addCart('${p.id}')">+ Simpan pilihan</button><a class="btn text-center text-sm" href="${safe(p.source)}" target="_blank" rel="noopener noreferrer">Lihat di toko asal ↗</a></div></div></article>`).join("")||"<p>Produk tidak ditemukan.</p>";}
-function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function addCart(id){let p=products.find(x=>x.id===id);if(p)cart.push(p);document.getElementById("cartCount").textContent=cart.length}
-function showCart(){document.getElementById("cartItems").innerHTML=cart.length?cart.map(p=>`<div class="flex justify-between py-2 border-b"><span>${safe(p.name)}</span><b>${rupiah(p.price)}</b></div>`).join(""):"Belum ada produk pilihan.";document.getElementById("cartModal").classList.add("open")}
-function closeModal(id){document.getElementById(id).classList.remove("open")}
-function renderAdmin(){document.getElementById("adminList").innerHTML=products.map(p=>`<div class="flex justify-between gap-2 border-b py-2"><span>${safe(p.name)}</span><button class="text-red-600" onclick="removeProduct('${p.id}')">Hapus</button></div>`).join("")}
-function removeProduct(id){products=products.filter(p=>p.id!==id);persist();renderProducts();renderAdmin()}
-
-const starterArticles=[
-{id:"a1",title:"Memilih lapangan golf yang tepat untuk pengalaman pertama",category:"Lapangan Golf",author:"Redaksi GolfShop.id",date:"Panduan",image:"https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=80",excerpt:"Hal-hal yang sebaiknya diperiksa sebelum menentukan lapangan untuk bermain.",body:"Memilih lapangan golf untuk pertama kali tidak harus rumit. Pertimbangkan lokasi, akses, biaya green fee yang diumumkan pengelola, fasilitas latihan, ketersediaan penyewaan peralatan, serta tingkat kesulitan lapangan.\\n\\nPemula dapat menanyakan apakah tersedia sesi pengenalan atau pendampingan. Periksa situs atau kanal resmi lapangan untuk informasi terbaru mengenai jam operasional, aturan berpakaian, reservasi, dan kebijakan cuaca.\\n\\nInformasi fasilitas dan harga dapat berubah. Konfirmasikan langsung kepada pengelola sebelum berangkat."},
-{id:"a2",title:"Dasar grip, stance, dan alignment dalam permainan golf",category:"Teknik Bermain",author:"Redaksi GolfShop.id",date:"Materi belajar",image:"https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&w=900&q=80",excerpt:"Tiga fondasi yang dapat dipelajari sebelum berlatih ayunan secara konsisten.",body:"Grip adalah cara tangan memegang klub. Stance adalah posisi tubuh dan kaki saat bersiap memukul. Alignment membantu mengarahkan tubuh dan clubface terhadap sasaran.\\n\\nLatih ketiganya secara perlahan dengan setengah ayunan terlebih dahulu. Gunakan cermin atau rekaman video untuk mengamati posisi, dan mintalah masukan dari pelatih bila memungkinkan. Hindari memaksakan gerakan yang menimbulkan rasa sakit."},
-{id:"a3",title:"Aplikasi golf dan teknologi untuk mencatat perkembangan permainan",category:"Aplikasi & Teknologi",author:"Redaksi GolfShop.id",date:"Panduan teknologi",image:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",excerpt:"Mengenal fungsi GPS lapangan, pencatat skor, analisis ayunan, dan simulator.",body:"Aplikasi golf dapat membantu mencatat skor, mengukur jarak berbasis GPS, menyimpan statistik, atau menganalisis ayunan bila perangkat mendukungnya. Simulator golf dapat memberi data latihan seperti kecepatan bola, sudut peluncuran, spin, dan jarak estimasi.\\n\\nSebelum memilih aplikasi, periksa kompatibilitas perangkat, biaya berlangganan, kebijakan privasi, kebutuhan koneksi internet, dan cara mengekspor data. Angka dari perangkat merupakan alat bantu; interpretasinya tetap perlu memperhatikan kondisi latihan."},
-{id:"a4",title:"Mengenal kategori merek dan produk perlengkapan golf",category:"Merek & Produk",author:"Redaksi GolfShop.id",date:"Panduan belanja",image:"https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=900&q=80",excerpt:"Cara membandingkan klub, bola, sepatu, apparel, dan aksesori berdasarkan kebutuhan.",body:"Setiap kategori perlengkapan memiliki fungsi dan variasi spesifikasi. Saat membandingkan produk, perhatikan ukuran, loft, shaft, material, tingkat fleksibilitas, kenyamanan, garansi, serta kebijakan retur.\\n\\nNama merek saja tidak cukup untuk menentukan kecocokan. Pemula dapat mempertimbangkan set pemula atau peralatan bekas dengan kondisi yang diperiksa secara teliti. Pastikan keaslian barang dan reputasi penjual sebelum membeli."},
-{id:"a5",title:"Mengikuti pertandingan golf: format, jadwal, dan sumber informasi",category:"Pertandingan",author:"Redaksi GolfShop.id",date:"Panduan penggemar",image:"https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=80",excerpt:"Panduan mencari kalender turnamen dan memahami informasi hasil pertandingan.",body:"Penggemar dapat mengikuti turnamen melalui kalender dan kanal resmi penyelenggara, asosiasi golf, atau tur profesional. Perhatikan format pertandingan, daftar peserta, leaderboard, aturan cut, dan pembaruan skor.\\n\\nJadwal, peserta, dan hasil pertandingan bersifat dinamis. Artikel berita harus mencantumkan tanggal publikasi serta tautan sumber resmi agar pembaca dapat memeriksa informasi terbaru. Jangan menerbitkan skor atau hasil yang belum diverifikasi."}
-];
-let articles=JSON.parse(localStorage.getItem("golfshop_articles")||"null")||starterArticles;
-let activeArticleCategory="";
-function persistArticles(){localStorage.setItem("golfshop_articles",JSON.stringify(articles))}
+"use strict";
+let db=null,products=[],articles=[],cart=[],activeArticleCategory="";
+const $=id=>document.getElementById(id);
+const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(Number(n)||0);
+function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function safeUrl(v){try{let u=new URL(String(v||""));return ["https:","http:"].includes(u.protocol)?u.href:"#"}catch{return "#"}}
+function closeModal(id){$(id).classList.remove("open")}
+function showCart(){$("cartItems").innerHTML=cart.length?cart.map(p=>`<div class="flex justify-between py-2 border-b gap-3"><span>${safe(p.name)}</span><b>${rupiah(p.price)}</b></div>`).join(""):"Belum ada produk pilihan.";$("cartModal").classList.add("open")}
+function addCart(id){let p=products.find(x=>x.id===id);if(p){cart.push(p);$("cartCount").textContent=cart.length}}
+function renderProducts(){
+ let q=$("search").value.toLowerCase().trim(),c=$("category").value;
+ let list=products.filter(p=>(!c||p.category===c)&&(`${p.name} ${p.description||""}`).toLowerCase().includes(q));
+ $("products").innerHTML=list.map(p=>{let im=safeUrl(p.image_url),src=safeUrl(p.source_url);return `<article class="product"><img loading="lazy" src="${im==="#"?"https://placehold.co/600x400/e8f7ef/14532d?text=GolfShop":im}" onerror="this.src='https://placehold.co/600x400/e8f7ef/14532d?text=GolfShop'" alt="${safe(p.name)}"><div class="p-3 sm:p-4"><span class="text-xs text-emerald-700 font-bold">${safe(p.category)}</span><h3 class="font-bold mt-1 min-h-12">${safe(p.name)}</h3><p class="font-black text-emerald-800 mt-2">${rupiah(p.price)}</p><p class="text-xs text-slate-500 mt-1 min-h-9">${safe(p.description||"")}</p><div class="flex flex-col gap-2 mt-3"><button class="pill text-sm" onclick="addCart('${safe(p.id)}')">+ Simpan pilihan</button>${src!=="#"?`<a class="btn text-center text-sm" href="${src}" target="_blank" rel="noopener noreferrer">Lihat di toko asal ↗</a>`:'<span class="text-xs text-slate-500 text-center">Informasi toko belum tersedia</span>'}</div></div></article>`}).join("")||'<p class="col-span-full text-slate-500">Belum ada produk yang sesuai.</p>';
+}
 function setArticleCategory(c){activeArticleCategory=c;renderArticles()}
 function renderArticles(){
- const list=articles.filter(a=>!activeArticleCategory||a.category===activeArticleCategory);
- document.getElementById("article-list").innerHTML=list.map(a=>`<article class="product"><img loading="lazy" src="${safe(a.image||"")}" onerror="this.src='https://placehold.co/900x500/e8f7ef/14532d?text=Golf+Insight'"><div class="p-4"><span class="text-xs text-emerald-700 font-bold">${safe(a.category)}</span><h3 class="font-black text-lg mt-2">${safe(a.title)}</h3><p class="text-xs text-slate-500 mt-1">${safe(a.author||"Redaksi")} · ${safe(a.date||"")}</p><p class="text-sm text-slate-600 mt-3">${safe(a.excerpt)}</p><button class="btn mt-4 text-sm" onclick="readArticle('${a.id}')">Baca artikel</button></div></article>`).join("")||"<p>Belum ada artikel pada kategori ini.</p>";
+ let list=articles.filter(a=>!activeArticleCategory||a.category===activeArticleCategory);
+ $("article-list").innerHTML=list.map(a=>{let im=safeUrl(a.image_url);return `<article class="product"><img loading="lazy" src="${im==="#"?"https://placehold.co/900x500/e8f7ef/14532d?text=Golf+Insight":im}" onerror="this.src='https://placehold.co/900x500/e8f7ef/14532d?text=Golf+Insight'" alt="${safe(a.title)}"><div class="p-4"><span class="text-xs text-emerald-700 font-bold">${safe(a.category)}</span><h3 class="font-black text-lg mt-2">${safe(a.title)}</h3><p class="text-xs text-slate-500 mt-1">${safe(a.author||"Redaksi GolfShop.id")} · ${a.published_at?new Date(a.published_at).toLocaleDateString("id-ID"):""}</p><p class="text-sm text-slate-600 mt-3">${safe(a.excerpt)}</p><button class="btn mt-4 text-sm" onclick="readArticle('${safe(a.id)}')">Baca artikel</button></div></article>`}).join("")||'<p class="col-span-full text-slate-500">Belum ada artikel yang diterbitkan pada kategori ini.</p>';
 }
-function readArticle(id){const a=articles.find(x=>x.id===id);if(!a)return;document.getElementById("articleCategory").textContent=a.category;document.getElementById("articleTitle").textContent=a.title;document.getElementById("articleMeta").textContent=(a.author||"Redaksi")+" · "+(a.date||"");document.getElementById("articleImage").src=a.image||"https://placehold.co/900x500";document.getElementById("articleBody").textContent=a.body;document.getElementById("articleModal").classList.add("open")}
-function renderArticleAdmin(){const el=document.getElementById("articleAdminList");if(!el)return;el.innerHTML=articles.map(a=>`<div class="flex justify-between gap-2 border-b py-2"><span>${safe(a.title)} <small class="text-slate-500">(${safe(a.category)})</small></span><button class="text-red-600" onclick="removeArticle('${a.id}')">Hapus</button></div>`).join("")}
-function removeArticle(id){articles=articles.filter(a=>a.id!==id);persistArticles();renderArticles();renderArticleAdmin()}
-document.getElementById("articleForm").addEventListener("submit",e=>{e.preventDefault();const f=new FormData(e.target);articles.unshift({id:"a"+Date.now(),title:f.get("title"),category:f.get("category"),author:f.get("author")||"Redaksi GolfShop.id",date:new Date().toLocaleDateString("id-ID"),image:f.get("image"),excerpt:f.get("excerpt"),body:f.get("body")});persistArticles();renderArticles();renderArticleAdmin();e.target.reset();alert("Artikel disimpan di browser ini.")});
-
-document.getElementById("productForm").addEventListener("submit",e=>{e.preventDefault();let f=new FormData(e.target);products.unshift({id:"p"+Date.now(),name:f.get("name"),price:Number(f.get("price")),category:f.get("category"),image:f.get("image"),source:f.get("source"),type:f.get("type"),description:f.get("description")});persist();renderProducts();renderAdmin();renderArticles();renderArticleAdmin();e.target.reset();alert("Produk disimpan pada browser ini.")});
-document.getElementById("adminModal").addEventListener("click",e=>{if(e.target.id==="adminModal")closeModal("adminModal")});
-document.getElementById("year").textContent=new Date().getFullYear();renderProducts();renderAdmin();renderArticles();renderArticleAdmin();
-</script></body></html>
+function readArticle(id){let a=articles.find(x=>x.id===id);if(!a)return;$("articleCategory").textContent=a.category||"";$("articleTitle").textContent=a.title||"";$("articleMeta").textContent=a.author||"Redaksi GolfShop.id";$("articleImage").src=safeUrl(a.image_url)==="#"?"https://placehold.co/900x500":safeUrl(a.image_url);$("articleBody").textContent=a.body||"";$("articleModal").classList.add("open")}
+async function loadProducts(){
+ $("productStatus").textContent="Memuat katalog produk…";
+ let {data,error}=await db.from("products").select("*").eq("is_active",true).order("created_at",{ascending:false});
+ if(error){products=[];$("productStatus").textContent="Katalog belum dapat dimuat: "+error.message}
+ else{products=data||[];$("productStatus").textContent=products.length?`${products.length} produk tersedia`:"Belum ada produk aktif di katalog."}
+ renderProducts();
+}
+async function loadArticles(){
+ $("articleStatus").textContent="Memuat artikel…";
+ let {data,error}=await db.from("articles").select("id,title,category,author,image_url,excerpt,body,published_at").eq("status","published").order("published_at",{ascending:false});
+ if(error){articles=[];$("articleStatus").textContent="Artikel belum dapat dimuat: "+error.message}
+ else{articles=data||[];$("articleStatus").textContent=articles.length?`${articles.length} artikel diterbitkan`:"Belum ada artikel yang diterbitkan."}
+ renderArticles();
+}
+async function checkStaffAccess(){
+ let {data:{session}}=await db.auth.getSession();if(!session)return;
+ let {data,error}=await db.from("profiles").select("role").eq("id",session.user.id).maybeSingle();
+ if(!error&&data&&["admin","editor"].includes(data.role))$("manageLink").classList.remove("hidden");
+}
+async function init(){
+ $("year").textContent=new Date().getFullYear();
+ let config=JSON.parse(localStorage.getItem("golfshop_supabase")||"null");
+ if(!config?.url||!config?.key){$("productStatus").textContent="Koneksi Supabase belum dikonfigurasi. Silakan hubungkan melalui halaman admin."; $("articleStatus").textContent="Artikel belum dapat dimuat karena koneksi Supabase belum tersedia.";renderProducts();renderArticles();return}
+ try{db=window.supabase.createClient(config.url,config.key);await Promise.all([loadProducts(),loadArticles(),checkStaffAccess()])}
+ catch(err){$("productStatus").textContent="Gagal menghubungkan ke Supabase: "+(err.message||err);$("articleStatus").textContent="Koneksi Supabase belum tersedia."}
+}
+$("cartModal").addEventListener("click",e=>{if(e.target.id==="cartModal")closeModal("cartModal")});
+$("articleModal").addEventListener("click",e=>{if(e.target.id==="articleModal")closeModal("articleModal")});
+init();
+</script>
+</body>
+</html>
