@@ -83,7 +83,7 @@ let db=null,products=[],articles=[],cart=[],activeArticleCategory="";
 const $=id=>document.getElementById(id);
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(Number(n)||0);
 function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function safeUrl(v){try{let u=new URL(String(v||""));return ["https:","http:"].includes(u.protocol)?u.href:"#"}catch{return "#"}}
+function safeUrl(v){try{if(!v)return "#";let u=new URL(String(v),location.href);return ["https:","http:"].includes(u.protocol)?u.href:"#"}catch{return "#"}}
 function closeModal(id){$(id).classList.remove("open")}
 function showCart(){$("cartItems").innerHTML=cart.length?cart.map(p=>`<div class="flex justify-between py-2 border-b gap-3"><span>${safe(p.name)}</span><b>${rupiah(p.price)}</b></div>`).join(""):"Belum ada produk pilihan.";$("cartModal").classList.add("open")}
 function addCart(id){let p=products.find(x=>x.id===id);if(p){cart.push(p);$("cartCount").textContent=cart.length}}
