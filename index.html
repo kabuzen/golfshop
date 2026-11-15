@@ -6,6 +6,8 @@
 <title>GolfShop.id | Perlengkapan Golf Terjangkau</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 <style>
 :root{--green:#0e8a58}*{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui;background:#f7faf9;color:#14243a}
 .hero{background:linear-gradient(110deg,rgba(5,38,65,.88),rgba(7,112,77,.45)),url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1800&q=85') center/cover}
@@ -14,13 +16,25 @@
 .product img{width:100%;height:180px;object-fit:cover;background:#eef4f0}
 .btn{background:#087b4d;color:white;border-radius:999px;padding:10px 17px;font-weight:700}.btn:hover{background:#05613c}
 .pill{border:1px solid #d7e6dd;border-radius:999px;padding:8px 14px;background:white}.modal{display:none}.modal.open{display:flex}
+.tab.active{background:#087b4d;color:#fff;border-color:#087b4d}
+.prose h2{font-size:1.35rem;font-weight:800;margin:1.6rem 0 .6rem}.prose h3{font-size:1.1rem;font-weight:800;margin:1.2rem 0 .4rem}
+.prose p{margin:.6rem 0}.prose ul,.prose ol{margin:.6rem 0 .6rem 1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose li{margin:.25rem 0}
+.prose img{width:100%;border-radius:14px;margin:1rem 0;border:1px solid #e4ece8;background:#f7faf9}
+.prose table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem;display:block;overflow-x:auto}
+.prose th{background:#087b4d;color:#fff;text-align:left;padding:.5rem .7rem}.prose td{border-bottom:1px solid #e4ece8;padding:.5rem .7rem}
+.prose tr:nth-child(even) td{background:#f4faf7}.prose a{color:#087b4d;text-decoration:underline}
+.prose blockquote{border-left:4px solid #f5b301;background:#fffbea;padding:.6rem .9rem;border-radius:8px;margin:1rem 0}
+.prose em{color:#475569}
+.bookcover{height:180px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;color:#fff;background:linear-gradient(140deg,#052641,#087b4d)}
+.vthumb{position:relative;cursor:pointer;aspect-ratio:16/9;background:#000}.vthumb img{width:100%;height:100%;object-fit:cover}
+.vthumb .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}.vthumb .play span{width:62px;height:62px;border-radius:999px;background:rgba(8,123,77,.92);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center}
 @media(max-width:640px){.hero{min-height:380px}.product img{height:145px}}
 </style>
 </head>
 <body>
 <header class="bg-white/95 sticky top-0 z-40 border-b border-emerald-100"><div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
 <a href="#" class="font-black text-xl text-emerald-800">⛳ GolfShop<span class="text-slate-700">.id</span></a>
-<nav class="hidden md:flex gap-6 text-sm font-semibold"><a href="#produk">Produk</a><a href="#preloved">Preloved</a><a href="#artikel">Artikel Golf</a><a href="#cara">Cara Belanja</a><a href="#tentang">Tentang</a></nav>
+<nav class="hidden md:flex gap-6 text-sm font-semibold"><a href="#produk">Produk</a><a href="#preloved">Preloved</a><a href="#artikel">Artikel Golf</a><a href="#belajar">Belajar</a><a href="#cara">Cara Belanja</a><a href="#tentang">Tentang</a></nav>
 <div class="flex gap-2 items-center"><button class="pill text-sm" onclick="showCart()">🛒 <span id="cartCount">0</span></button><a id="manageLink" class="btn text-sm hidden" href="/admin.html">Kelola</a></div>
 </div></header>
 <section class="hero text-white"><div class="max-w-7xl mx-auto px-5 py-20 md:py-28"><div class="max-w-2xl">
@@ -50,6 +64,14 @@
 <div class="flex justify-between"><span id="articleCategory" class="text-xs font-bold text-emerald-700"></span><button onclick="closeModal('articleModal')">✕</button></div>
 <h2 id="articleTitle" class="text-2xl md:text-3xl font-black mt-3"></h2><p id="articleMeta" class="text-xs text-slate-500 mt-2"></p><img id="articleImage" class="w-full h-56 md:h-72 object-cover rounded-xl my-5" alt=""><div id="articleBody" class="text-slate-700 leading-7 whitespace-pre-line"></div>
 </article></div>
+<section id="belajar" class="py-12 gradient"><div class="max-w-7xl mx-auto px-4">
+<div class="mb-6"><p class="text-emerald-700 font-bold text-sm">BELAJAR GOLF</p><h2 class="text-3xl font-black">Teknik pukulan, video animasi & buku golf</h2><p class="text-slate-600 mt-1">Panduan bergambar dengan tabel, hasil penelitian, dan referensi untuk golfer pemula hingga mahir.</p></div>
+<div class="flex gap-2 overflow-x-auto pb-3"><button class="pill tab whitespace-nowrap" data-tab="teknik" onclick="setResTab('teknik')">🏌️ Teknik Pukulan</button><button class="pill tab whitespace-nowrap" data-tab="video" onclick="setResTab('video')">🎬 Video Animasi</button><button class="pill tab whitespace-nowrap" data-tab="buku" onclick="setResTab('buku')">📚 Buku Golf</button></div>
+<p id="resStatus" class="text-sm text-slate-500 mt-2">Memuat materi…</p><div id="res-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4"></div></div></section>
+<div id="resModal" class="modal fixed inset-0 bg-slate-950/60 z-50 items-start justify-center p-3 overflow-y-auto"><article class="bg-white rounded-2xl p-5 md:p-8 w-full max-w-3xl my-8">
+<div class="flex justify-between"><span id="resLevel" class="text-xs font-bold text-emerald-700"></span><button onclick="closeModal('resModal')">✕</button></div>
+<h2 id="resTitle" class="text-2xl md:text-3xl font-black mt-3"></h2><div id="resBody" class="prose text-slate-700 leading-7 mt-4"></div>
+</article></div>
 <section id="tentang" class="max-w-7xl mx-auto px-4 py-12"><h2 class="text-2xl font-black">Golf untuk semua</h2><p class="mt-3 text-slate-600 max-w-3xl">GolfShop.id dirancang sebagai etalase perlengkapan golf untuk berbagai usia dan tingkat kemampuan. Kami ingin membantu komunitas menemukan pilihan yang sesuai anggaran, tanpa mengklaim harga termurah atau ketersediaan yang belum diverifikasi.</p></section>
 <footer class="bg-slate-950 text-slate-300 py-8"><div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between gap-3"><b class="text-white">GolfShop.id</b><p class="text-sm">© <span id="year"></span> GolfShop.id · Kebijakan privasi · Hubungi pengelola</p></div></footer>
 <div id="cartModal" class="modal fixed inset-0 bg-slate-950/50 z-50 items-center justify-center p-4"><div class="bg-white rounded-2xl p-5 w-full max-w-lg"><div class="flex justify-between"><h3 class="font-black text-xl">Daftar pilihan</h3><button onclick="closeModal('cartModal')">✕</button></div><div id="cartItems" class="my-4"></div><p class="text-xs text-slate-500">Keranjang ini hanya menyimpan pilihan pada perangkat. Untuk produk marketplace, lanjutkan transaksi di toko asal.</p><button class="btn mt-4" onclick="closeModal('cartModal')">Lanjut menjelajah</button></div></div>
@@ -74,6 +96,26 @@ function renderProducts(){
 function renderPreloved(pre,q,c){
  let list=pre.filter(p=>(!c||p.category===c)&&(`${p.name} ${p.description||""}`).toLowerCase().includes(q));
  $("prelovedList").innerHTML=list.map(p=>{let im=safeUrl(p.image_url);return `<div class="p-4 flex flex-col sm:flex-row sm:items-center gap-3">${im!=="#"?`<img loading="lazy" src="${im}" alt="${safe(p.name)}" class="w-full sm:w-36 h-40 sm:h-28 object-cover rounded-xl bg-emerald-50 shrink-0">`:""}<div class="flex-1"><span class="text-xs text-emerald-700 font-bold">${safe(p.category)} · Preloved</span><h3 class="font-bold">${safe(p.name.replace(/\s*—\s*Preloved$/i,""))}</h3><p class="text-sm text-slate-600 mt-1">${safe(p.description||"")}</p></div><div class="sm:text-right sm:w-48 shrink-0"><p class="font-black text-emerald-800 text-lg">${rupiah(p.price)}</p><p class="text-xs text-slate-500">belum termasuk ongkir</p><button class="pill text-sm mt-2" onclick="addCart('${safe(p.id)}')">+ Simpan pilihan</button></div></div>`}).join("")||'<p class="p-4 text-slate-500">Belum ada barang preloved yang sesuai.</p>';
+}
+let resources=[],resTab="teknik";
+function setResTab(t){resTab=t;document.querySelectorAll('#belajar .tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));renderResources()}
+function ytId(v){return String(v||"").replace(/[^\w-]/g,"").slice(0,20)}
+function renderResources(){
+ let list=resources.filter(r=>r.type===resTab);
+ let html="";
+ if(resTab==="video")html=list.map(r=>{let id=ytId(r.video_id);return `<article class="product"><div class="vthumb" id="v-${id}" onclick="playVideo('${id}')"><img loading="lazy" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${safe(r.title)}"><div class="play"><span>▶</span></div></div><div class="p-4"><span class="text-xs text-emerald-700 font-bold">${safe(r.level||"Video")}</span><h3 class="font-black mt-1">${safe(r.title)}</h3><p class="text-xs text-slate-500 mt-1">${safe(r.author||"")}</p><p class="text-sm text-slate-600 mt-2">${safe(r.summary||"")}</p><a class="text-sm font-bold text-emerald-700 mt-3 inline-block" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener noreferrer">Tonton di YouTube ↗</a></div></article>`}).join("");
+ else if(resTab==="buku")html=list.map(r=>`<article class="product"><div class="bookcover"><span class="text-xs uppercase tracking-wider text-emerald-200">${safe(r.year||"")}</span><b class="text-lg leading-tight">${safe(r.title)}</b><span class="text-sm text-white/80 mt-1">${safe(r.author||"")}</span></div><div class="p-4"><span class="text-xs text-emerald-700 font-bold">${safe(r.level||"Buku")}</span><p class="text-sm text-slate-600 mt-2">${safe(r.summary||"")}</p>${r.body?`<button class="btn mt-4 text-sm" onclick="openResource('${safe(r.id)}')">Baca ulasan</button>`:""}${safeUrl(r.source_url)!=="#"?`<a class="text-sm font-bold text-emerald-700 mt-3 ml-3 inline-block" href="${safeUrl(r.source_url)}" target="_blank" rel="noopener noreferrer">Cari bukunya ↗</a>`:""}</div></article>`).join("");
+ else html=list.map(r=>{let im=safeUrl(r.image_url);return `<article class="product"><img loading="lazy" src="${im==="#"?"https://placehold.co/900x500/e8f7ef/14532d?text=Teknik+Golf":im}" alt="${safe(r.title)}" style="object-fit:contain;background:#f7faf9"><div class="p-4"><span class="text-xs text-emerald-700 font-bold">${safe(r.level||"Teknik")}</span><h3 class="font-black text-lg mt-1">${safe(r.title)}</h3><p class="text-sm text-slate-600 mt-2">${safe(r.summary||"")}</p><button class="btn mt-4 text-sm" onclick="openResource('${safe(r.id)}')">Baca panduan</button></div></article>`}).join("");
+ $("res-list").innerHTML=html||'<p class="col-span-full text-slate-500">Materi untuk bagian ini segera hadir.</p>';
+}
+function playVideo(id){let el=$("v-"+id);if(!el)return;el.onclick=null;el.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:0"></iframe>`}
+function openResource(id){let r=resources.find(x=>x.id===id);if(!r)return;$("resLevel").textContent=[r.type==="buku"?"Ulasan buku":"Teknik pukulan",r.level].filter(Boolean).join(" · ");$("resTitle").textContent=r.title;
+ let html=window.marked&&window.DOMPurify?DOMPurify.sanitize(marked.parse(r.body||"")):safe(r.body||"").replace(/\n/g,"<br>");
+ $("resBody").innerHTML=html;$("resBody").querySelectorAll("a").forEach(a=>{a.target="_blank";a.rel="noopener noreferrer"});$("resModal").classList.add("open");$("resModal").scrollTop=0}
+async function loadResources(){
+ let {data,error}=await db.from("resources").select("id,type,title,summary,body,image_url,video_id,author,year,level,source_url").eq("status","published").order("sort").order("created_at");
+ if(error){$("resStatus").textContent="Materi belum dapat dimuat: "+error.message;return}
+ resources=data||[];$("resStatus").textContent=`${resources.filter(r=>r.type==="teknik").length} panduan teknik · ${resources.filter(r=>r.type==="video").length} video · ${resources.filter(r=>r.type==="buku").length} buku`;setResTab(resTab);
 }
 function setArticleCategory(c){activeArticleCategory=c;renderArticles()}
 function renderArticles(){
@@ -104,10 +146,11 @@ async function init(){
  $("year").textContent=new Date().getFullYear();
  let config=JSON.parse(localStorage.getItem("golfshop_supabase")||"null")||PUBLIC_SUPABASE;
  if(!config?.url||!config?.key){$("productStatus").textContent="Koneksi Supabase belum dikonfigurasi. Silakan hubungkan melalui halaman admin."; $("articleStatus").textContent="Artikel belum dapat dimuat karena koneksi Supabase belum tersedia.";renderProducts();renderArticles();return}
- try{db=window.supabase.createClient(config.url,config.key);await Promise.all([loadProducts(),loadArticles(),checkStaffAccess()])}
+ try{db=window.supabase.createClient(config.url,config.key);await Promise.all([loadProducts(),loadArticles(),loadResources(),checkStaffAccess()])}
  catch(err){$("productStatus").textContent="Gagal menghubungkan ke Supabase: "+(err.message||err);$("articleStatus").textContent="Koneksi Supabase belum tersedia."}
 }
 $("cartModal").addEventListener("click",e=>{if(e.target.id==="cartModal")closeModal("cartModal")});
+$("resModal").addEventListener("click",e=>{if(e.target.id==="resModal")closeModal("resModal")});
 $("articleModal").addEventListener("click",e=>{if(e.target.id==="articleModal")closeModal("articleModal")});
 init();
 </script>
