@@ -20,7 +20,7 @@
 <body>
 <header class="bg-white/95 sticky top-0 z-40 border-b border-emerald-100"><div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
 <a href="#" class="font-black text-xl text-emerald-800">⛳ GolfShop<span class="text-slate-700">.id</span></a>
-<nav class="hidden md:flex gap-6 text-sm font-semibold"><a href="#produk">Produk</a><a href="#artikel">Artikel Golf</a><a href="#cara">Cara Belanja</a><a href="#tentang">Tentang</a></nav>
+<nav class="hidden md:flex gap-6 text-sm font-semibold"><a href="#produk">Produk</a><a href="#preloved">Preloved</a><a href="#artikel">Artikel Golf</a><a href="#cara">Cara Belanja</a><a href="#tentang">Tentang</a></nav>
 <div class="flex gap-2 items-center"><button class="pill text-sm" onclick="showCart()">🛒 <span id="cartCount">0</span></button><a id="manageLink" class="btn text-sm hidden" href="/admin.html">Kelola</a></div>
 </div></header>
 <section class="hero text-white"><div class="max-w-7xl mx-auto px-5 py-20 md:py-28"><div class="max-w-2xl">
@@ -35,6 +35,8 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6"><div><p class="text-emerald-700 font-bold text-sm">KATALOG PILIHAN</p><h2 class="text-3xl font-black">Temukan perlengkapan Anda</h2><p class="text-slate-500 mt-1">Harga dan ketersediaan dapat berubah di toko asal.</p></div>
 <div class="flex flex-col sm:flex-row gap-2"><input id="search" class="border rounded-xl px-3 py-2" placeholder="Cari produk..." oninput="renderProducts()"><select id="category" class="border rounded-xl px-3 py-2" onchange="renderProducts()"><option value="">Semua kategori</option><option>Klub</option><option>Bola</option><option>Apparel Pria</option><option>Apparel Wanita</option><option>Junior</option><option>Aksesori</option><option>Sepatu</option></select></div></div>
 <p id="productStatus" class="text-sm text-slate-500 mb-4">Memuat katalog produk…</p><div id="products" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div></main>
+<section id="preloved" class="max-w-7xl mx-auto px-4 pb-12"><div class="mb-4"><p class="text-emerald-700 font-bold text-sm">PRELOVED</p><h2 class="text-3xl font-black">Daftar perlengkapan golf bekas</h2><p class="text-slate-500 mt-1">Stok terbatas, masing-masing hanya 1 unit. <b>Semua harga belum termasuk ongkos kirim.</b></p></div>
+<div id="prelovedList" class="bg-white border border-emerald-100 rounded-2xl divide-y"></div></section>
 <section id="cara" class="gradient py-12"><div class="max-w-7xl mx-auto px-4"><h2 class="text-2xl font-black mb-6">Belanja dengan cara yang sederhana</h2><div class="grid md:grid-cols-3 gap-5">
 <div class="bg-white rounded-2xl p-5"><b>1. Pilih produk</b><p class="text-sm text-slate-600 mt-2">Telusuri katalog dan baca informasi produk.</p></div>
 <div class="bg-white rounded-2xl p-5"><b>2. Periksa toko asal</b><p class="text-sm text-slate-600 mt-2">Untuk produk marketplace, transaksi dilanjutkan di platform asal.</p></div>
@@ -54,6 +56,7 @@
 
 <script>
 "use strict";
+const PUBLIC_SUPABASE={url:"https://tjeodignobdnqgrobrfq.supabase.co",key:"sb_publishable_tmWCLGnnHkVlT0ki_bJI3w_1liaCWck"};
 let db=null,products=[],articles=[],cart=[],activeArticleCategory="";
 const $=id=>document.getElementById(id);
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(Number(n)||0);
@@ -64,8 +67,13 @@ function showCart(){$("cartItems").innerHTML=cart.length?cart.map(p=>`<div class
 function addCart(id){let p=products.find(x=>x.id===id);if(p){cart.push(p);$("cartCount").textContent=cart.length}}
 function renderProducts(){
  let q=$("search").value.toLowerCase().trim(),c=$("category").value;
- let list=products.filter(p=>(!c||p.category===c)&&(`${p.name} ${p.description||""}`).toLowerCase().includes(q));
+ let pre=products.filter(p=>p.condition==="preloved");renderPreloved(pre,q,c);
+ let list=products.filter(p=>p.condition!=="preloved"&&(!c||p.category===c)&&(`${p.name} ${p.description||""}`).toLowerCase().includes(q));
  $("products").innerHTML=list.map(p=>{let im=safeUrl(p.image_url),src=safeUrl(p.source_url);return `<article class="product"><img loading="lazy" src="${im==="#"?"https://placehold.co/600x400/e8f7ef/14532d?text=GolfShop":im}" onerror="this.src='https://placehold.co/600x400/e8f7ef/14532d?text=GolfShop'" alt="${safe(p.name)}"><div class="p-3 sm:p-4"><span class="text-xs text-emerald-700 font-bold">${safe(p.category)}</span><h3 class="font-bold mt-1 min-h-12">${safe(p.name)}</h3><p class="font-black text-emerald-800 mt-2">${rupiah(p.price)}</p><p class="text-xs text-slate-500 mt-1 min-h-9">${safe(p.description||"")}</p><div class="flex flex-col gap-2 mt-3"><button class="pill text-sm" onclick="addCart('${safe(p.id)}')">+ Simpan pilihan</button>${src!=="#"?`<a class="btn text-center text-sm" href="${src}" target="_blank" rel="noopener noreferrer">Lihat di toko asal ↗</a>`:'<span class="text-xs text-slate-500 text-center">Informasi toko belum tersedia</span>'}</div></div></article>`}).join("")||'<p class="col-span-full text-slate-500">Belum ada produk yang sesuai.</p>';
+}
+function renderPreloved(pre,q,c){
+ let list=pre.filter(p=>(!c||p.category===c)&&(`${p.name} ${p.description||""}`).toLowerCase().includes(q));
+ $("prelovedList").innerHTML=list.map(p=>`<div class="p-4 flex flex-col sm:flex-row sm:items-center gap-3"><div class="flex-1"><span class="text-xs text-emerald-700 font-bold">${safe(p.category)} · Preloved</span><h3 class="font-bold">${safe(p.name.replace(/\s*—\s*Preloved$/i,""))}</h3><p class="text-sm text-slate-600 mt-1">${safe(p.description||"")}</p></div><div class="sm:text-right sm:w-48 shrink-0"><p class="font-black text-emerald-800 text-lg">${rupiah(p.price)}</p><p class="text-xs text-slate-500">belum termasuk ongkir</p><button class="pill text-sm mt-2" onclick="addCart('${safe(p.id)}')">+ Simpan pilihan</button></div></div>`).join("")||'<p class="p-4 text-slate-500">Belum ada barang preloved yang sesuai.</p>';
 }
 function setArticleCategory(c){activeArticleCategory=c;renderArticles()}
 function renderArticles(){
@@ -75,7 +83,7 @@ function renderArticles(){
 function readArticle(id){let a=articles.find(x=>x.id===id);if(!a)return;$("articleCategory").textContent=a.category||"";$("articleTitle").textContent=a.title||"";$("articleMeta").textContent=a.author||"Redaksi GolfShop.id";$("articleImage").src=safeUrl(a.image_url)==="#"?"https://placehold.co/900x500":safeUrl(a.image_url);$("articleBody").textContent=a.body||"";$("articleModal").classList.add("open")}
 async function loadProducts(){
  $("productStatus").textContent="Memuat katalog produk…";
- let {data,error}=await db.from("products").select("*").eq("is_active",true).order("created_at",{ascending:false});
+ let {data,error}=await db.from("products").select("id,name,description,price,category,image_url,source_url,sales_mode,condition,created_at").eq("is_active",true).order("created_at",{ascending:false});
  if(error){products=[];$("productStatus").textContent="Katalog belum dapat dimuat: "+error.message}
  else{products=data||[];$("productStatus").textContent=products.length?`${products.length} produk tersedia`:"Belum ada produk aktif di katalog."}
  renderProducts();
@@ -94,7 +102,7 @@ async function checkStaffAccess(){
 }
 async function init(){
  $("year").textContent=new Date().getFullYear();
- let config=JSON.parse(localStorage.getItem("golfshop_supabase")||"null");
+ let config=JSON.parse(localStorage.getItem("golfshop_supabase")||"null")||PUBLIC_SUPABASE;
  if(!config?.url||!config?.key){$("productStatus").textContent="Koneksi Supabase belum dikonfigurasi. Silakan hubungkan melalui halaman admin."; $("articleStatus").textContent="Artikel belum dapat dimuat karena koneksi Supabase belum tersedia.";renderProducts();renderArticles();return}
  try{db=window.supabase.createClient(config.url,config.key);await Promise.all([loadProducts(),loadArticles(),checkStaffAccess()])}
  catch(err){$("productStatus").textContent="Gagal menghubungkan ke Supabase: "+(err.message||err);$("articleStatus").textContent="Koneksi Supabase belum tersedia."}
